@@ -141,4 +141,5 @@ class type push               =
   end
 (* -------------------------------------------------------------------------- *)
 
-
+let push () = Js.Unsafe.js_expr ("push")
+let push_notifications () = Js.Unsafe.js_expr ("PushNotification")
