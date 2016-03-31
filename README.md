@@ -3,11 +3,6 @@
 Binding to
 [cordova-plugin-push](https://github.com/phonegap/phonegap-plugin-push)
 
-[Example
-application](https://github.com/dannywillems/ocaml-cordova-plugin-push-notifications-example).
-
-**Not developed**
-
 ## What does cordova-plugin-push do ?
 
 ```
