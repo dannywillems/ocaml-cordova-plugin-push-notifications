@@ -17,7 +17,7 @@ val create_init_android_options :
   ?topics:(string array [@js.default [||]])       ->
   unit                                            ->
   init_android_options
-  [@@js.builder]
+[@@js.builder]
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
@@ -31,7 +31,7 @@ val create_init_ios_options     :
   ?categories:(string array [@js.default [||]])   ->
   unit                                            ->
   init_ios_options
-  [@@js.builder]
+[@@js.builder]
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
@@ -46,37 +46,27 @@ val create_init_options :
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
-
 (* ------------------------------- *)
 (* Objects for on notification *)
-class additional_data : Ojs.t ->
-  object
-    inherit Ojs.obj
-    method foreground              : bool
-    method cold_start              : bool
-  end
+type additional_data = private Ojs.t
+val foreground      : additional_data -> bool
+val cold_start      : additional_data -> bool
 
-class data_notification : Ojs.t ->
-  object
-    inherit Ojs.obj
-    method message                  : string
-    method title                    : string
-    method count                    : string
-    method sound                    : string
-    method image                    : string
-    method launch_args              : string
-    method additional_data          : additional_data
-  end
+type data_notification = private Ojs.t
+val message         : data_notification -> string
+val title           : data_notification -> string
+val count           : data_notification -> string
+val sound           : data_notification -> string
+val image           : data_notification -> string
+val launch_args     : data_notification -> string
+val additional_data : data_notification -> additional_data
 (* ------------------------------- *)
 
 (* ------------------------------- *)
 (* Object for on registration. *)
-class data_registration : Ojs.t ->
-  object
-    inherit Ojs.obj
+type data_registration = private Ojs.t
 
-    method registration_id : int
-  end
+val registration_id : data_registration -> int
 (* ------------------------------- *)
 
 type push = private Ojs.t
@@ -141,17 +131,12 @@ val finish :
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
-class push_notification : Ojs.t ->
-  object
-    inherit Ojs.obj
-    method init             : init_options -> push
-    (* DEPRECATED
-    method has_permission   : (data_permissions -> unit) -> unit
-    *)
-  end
-(* -------------------------------------------------------------------------- *)
-
-(* -------------------------------------------------------------------------- *)
-val push_notification : unit -> push_notification
-[@@js.get "PushNotification"]
+val init :
+  init_options ->
+  push
+[@@js.global "PushNotification.init"]
+(* DEPRECATED
+val has_permission   : (data_permissions -> unit) -> unit
+[@@js.global "PushNotification.hasPermission"]
+*)
 (* -------------------------------------------------------------------------- *)
