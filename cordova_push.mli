@@ -1,93 +1,102 @@
 (* -------------------------------------------------------------------------- *)
-type event
-val event_to_js_str : event -> string
-(* -------------------------------------------------------------------------- *)
+module Init_options : sig
 
-(* -------------------------------------------------------------------------- *)
-type init_android_options = private Ojs.t
+  module Android : sig
+    type t
 
-val create_init_android_options :
-  sender_id:string                                ->
-  ?icon:string                                    ->
-  ?icon_color:string                              ->
-  ?sound:(bool [@js.default true])                ->
-  ?vibrate:(bool [@js.default true])              ->
-  ?clear_notifications:(bool [@js.default true])  ->
-  ?force_show:(bool [@js.default false])          ->
-  ?topics:(string array [@js.default [||]])       ->
-  unit                                            ->
-  init_android_options
-[@@js.builder]
-(* -------------------------------------------------------------------------- *)
+    val create :
+      ?icon:string                                    ->
+      ?icon_color:string                              ->
+      ?sound:(bool [@js.default true])                ->
+      ?vibrate:(bool [@js.default true])              ->
+      ?clear_notifications:(bool [@js.default true])  ->
+      ?force_show:(bool [@js.default false])          ->
+      ?topics:(string array [@js.default [||]])       ->
+      sender_ID:string                                ->
+      unit                                            ->
+      t
+    [@@js.builder]
+  end
 
-(* -------------------------------------------------------------------------- *)
-type init_ios_options = private Ojs.t
+  module Ios : sig
+    type t
 
-val create_init_ios_options     :
-  ?alert:(bool [@js.default false])               ->
-  ?badge:(bool [@js.default false])               ->
-  ?sound:(bool [@js.default false])               ->
-  ?clear_badge:(bool [@js.default false])         ->
-  ?categories:(string array [@js.default [||]])   ->
-  unit                                            ->
-  init_ios_options
-[@@js.builder]
-(* -------------------------------------------------------------------------- *)
+    val create     :
+      ?alert:(bool [@js.default false])               ->
+      ?badge:(bool [@js.default false])               ->
+      ?sound:(bool [@js.default false])               ->
+      ?clear_badge:(bool [@js.default false])         ->
+      ?categories:(string array [@js.default [||]])   ->
+      unit                                            ->
+      t
+    [@@js.builder]
+  end
 
-(* -------------------------------------------------------------------------- *)
-type init_options = private Ojs.t
+  type t
 
-val create_init_options :
-  ?android:init_android_options ->
-  ?ios:init_ios_options         ->
-  unit                          ->
-  init_options
-  [@@js.builder]
+  val create :
+    ?android:Android.t ->
+    ?ios:Ios.t         ->
+    unit               ->
+    t
+    [@@js.builder]
+end
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
 (* ------------------------------- *)
 (* Objects for on notification *)
-type additional_data = private Ojs.t
-val foreground      : additional_data -> bool
-val cold_start      : additional_data -> bool
 
-type data_notification = private Ojs.t
-val message         : data_notification -> string
-val title           : data_notification -> string
-val count           : data_notification -> string
-val sound           : data_notification -> string
-val image           : data_notification -> string
-val launch_args     : data_notification -> string
-val additional_data : data_notification -> additional_data
+module Additional_data : sig
+  type t
+
+  val foreground      : t -> bool
+  val cold_start      : t -> bool
+end
+
+module Data_notification : sig
+    type t
+
+    val message         : t -> string
+    val title           : t -> string
+    val count           : t -> string
+    val sound           : t -> string
+    val image           : t -> string
+    val launch_args     : t -> string
+    val additional_data : t -> Additional_data.t
+  end
 (* ------------------------------- *)
 
 (* ------------------------------- *)
 (* Object for on registration. *)
-type data_registration = private Ojs.t
 
-val registration_id : data_registration -> int
+module Data_registration : sig
+  type t
+
+  val registration_id : t -> int
+end
+
 (* ------------------------------- *)
 
-type push = private Ojs.t
+type t
 
 [@@@js.stop]
-val on_registration : push -> (data_registration -> unit) -> unit
-val on_notification : push -> (data_notification -> unit) -> unit
+val on_registration : t -> (Data_registration.t -> unit) -> unit
+val on_notification : t -> (Data_notification.t -> unit) -> unit
 [@@@js.start]
 
 [@@@js.implem
   val on_registration_internal :
-    push ->
+    t ->
     string ->
-    (data_registration -> unit) ->
+    (Data_registration.t -> unit) ->
     unit
   [@@js.call "on"]
 
   val on_notification_internal :
-    push ->
+    t ->
     string ->
-    (data_notification -> unit) ->
+    (Data_notification.t -> unit) ->
     unit
   [@@js.call "on"]
 
@@ -96,7 +105,7 @@ val on_notification : push -> (data_notification -> unit) -> unit
 ]
 
 val unregister :
-  push            ->
+  t               ->
   (unit -> unit)  ->
   (unit -> unit)  ->
   string array    ->
@@ -105,7 +114,7 @@ val unregister :
 
 (* iOS only *)
 val set_application_icon_badge_number :
-  push            ->
+  t               ->
   (unit -> unit)  ->
   (unit -> unit)  ->
   int             ->
@@ -114,7 +123,7 @@ val set_application_icon_badge_number :
 
 (* iOS only *)
 val get_application_icon_badge_number :
-  push            ->
+  t               ->
   (int -> unit)   ->
   (unit -> unit)  ->
   unit
@@ -122,7 +131,7 @@ val get_application_icon_badge_number :
 
 (* iOS only *)
 val finish :
-  push            ->
+  t               ->
   (unit -> unit)  ->
   (unit -> unit)  ->
   string          ->
@@ -132,11 +141,16 @@ val finish :
 
 (* -------------------------------------------------------------------------- *)
 val init :
-  init_options ->
-  push
+  Init_options.t ->
+  t
 [@@js.global "PushNotification.init"]
-(* DEPRECATED
-val has_permission   : (data_permissions -> unit) -> unit
+
+module Data_permission : sig
+  type t
+
+  val is_enabled : t -> bool
+end
+
+val has_permission   : (Data_permission.t -> unit) -> unit
 [@@js.global "PushNotification.hasPermission"]
-*)
 (* -------------------------------------------------------------------------- *)
