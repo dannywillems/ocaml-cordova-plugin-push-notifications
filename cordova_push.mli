@@ -62,11 +62,12 @@ module Data_notification : sig
 
     val message         : t -> string
     val title           : t -> string
-    val count           : t -> string option
-    val sound           : t -> string option
-    val image           : t -> string option
-    val launch_args     : t -> string option
-    val additional_data : t -> Additional_data.t
+    val count           : t -> string option (* FIXME: Sometimes null, why ? *)
+    val sound           : t -> string option (* FIXME: Sometimes null, why ? *)
+    val image           : t -> string option (* FIXME: Sometimes null, why ? *)
+    val launch_args     : t -> string option (* FIXME: Sometimes null, why ? *)
+    val additional_data : t -> Additional_data.t option
+    (* FIXME: sometimes null, why ? *)
   end
 
 (* ---------- Objects for on notification ---------- *)
