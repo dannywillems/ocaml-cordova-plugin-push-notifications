@@ -1,4 +1,6 @@
-(* -------------------------------------------------------------------------- *)
+(* ----------------------------------------------------- *)
+(* ---------- Option to get a registration ID ---------- *)
+
 module Init_options : sig
 
   module Android : sig
@@ -41,11 +43,12 @@ module Init_options : sig
     t
     [@@js.builder]
 end
-(* -------------------------------------------------------------------------- *)
 
-(* -------------------------------------------------------------------------- *)
-(* ------------------------------- *)
-(* Objects for on notification *)
+(* ---------- Option to get a registration ID ---------- *)
+(* ----------------------------------------------------- *)
+
+(* ------------------------------------------------- *)
+(* ---------- Objects for on notification ---------- *)
 
 module Additional_data : sig
   type t
@@ -59,16 +62,18 @@ module Data_notification : sig
 
     val message         : t -> string
     val title           : t -> string
-    val count           : t -> string
-    val sound           : t -> string
-    val image           : t -> string
-    val launch_args     : t -> string
+    val count           : t -> string option
+    val sound           : t -> string option
+    val image           : t -> string option
+    val launch_args     : t -> string option
     val additional_data : t -> Additional_data.t
   end
-(* ------------------------------- *)
 
-(* ------------------------------- *)
-(* Object for on registration. *)
+(* ---------- Objects for on notification ---------- *)
+(* ------------------------------------------------- *)
+
+(* ------------------------------------------------- *)
+(* ---------- Object for on registration. ---------- *)
 
 module Data_registration : sig
   type t
@@ -76,13 +81,30 @@ module Data_registration : sig
   val registration_id : t -> int
 end
 
-(* ------------------------------- *)
+(* ---------- Object for on registration. ---------- *)
+(* ------------------------------------------------- *)
+
+(* --------------------------- *)
+(* ---------- Error ---------- *)
+
+module Error : sig
+  type t
+
+  val message : t -> string
+end
+
+(* ---------- Error ---------- *)
+(* --------------------------- *)
+
+(* ------------------------------ *)
+(* ---------- On event ---------- *)
 
 type t
 
 [@@@js.stop]
-val on_registration : t -> (Data_registration.t -> unit) -> unit
-val on_notification : t -> (Data_notification.t -> unit) -> unit
+val on_registration : t -> (Data_registration.t -> unit)  -> unit
+val on_notification : t -> (Data_notification.t -> unit)  -> unit
+val on_error        : t -> (Error.t -> unit)              -> unit
 [@@@js.start]
 
 [@@@js.implem
@@ -100,9 +122,65 @@ val on_notification : t -> (Data_notification.t -> unit) -> unit
     unit
   [@@js.call "on"]
 
+  val on_error_internal :
+    t ->
+    string ->
+    (Error.t -> unit) ->
+    unit
+  [@@js.call "on"]
+
   let on_registration t f = on_registration_internal t "registration" f
   let on_notification t f = on_notification_internal t "notification" f
+  let on_error        t f = on_error_internal t "error" f
 ]
+
+(* ---------- On event ---------- *)
+(* ------------------------------ *)
+
+(* ------------------------------- *)
+(* ---------- Off event ---------- *)
+(* !! You need to give the same function you sent to the corresponding on
+ * function ! See the document of the orignal plugin
+ *)
+
+[@@@js.stop]
+val off_registration : t -> (Data_registration.t -> unit)  -> unit
+val off_notification : t -> (Data_notification.t -> unit)  -> unit
+val off_error        : t -> (Error.t -> unit)              -> unit
+[@@@js.start]
+
+[@@@js.implem
+  val off_registration_internal :
+    t ->
+    string ->
+    (Data_registration.t -> unit) ->
+    unit
+  [@@js.call "off"]
+
+  val off_notification_internal :
+    t ->
+    string ->
+    (Data_notification.t -> unit) ->
+    unit
+  [@@js.call "off"]
+
+  val off_error_internal :
+    t ->
+    string ->
+    (Error.t -> unit) ->
+    unit
+  [@@js.call "off"]
+
+  let off_registration t f = off_registration_internal t "registration" f
+  let off_notification t f = off_notification_internal t "notification" f
+  let off_error        t f = off_error_internal t "error" f
+]
+
+(* ---------- Off event ---------- *)
+(* ------------------------------- *)
+
+(* -------------------------------------- *)
+(* ---------- Unregister an ID ---------- *)
 
 val unregister :
   t               ->
@@ -112,7 +190,14 @@ val unregister :
   unit
 [@@js.call]
 
-(* iOS only *)
+(* ---------- Unregister an ID ---------- *)
+(* -------------------------------------- *)
+
+(* ------------------------------------- *)
+(* ---------- Other functions ---------- *)
+(* See the official documentation for the description *)
+
+(* iOS & Android only *)
 val set_application_icon_badge_number :
   t               ->
   (unit -> unit)  ->
@@ -137,9 +222,21 @@ val finish :
   string          ->
   unit
 [@@js.call]
+
+val clear_all_notifications :
+  t               ->
+  (unit -> unit)  ->
+  (unit -> unit)  ->
+  unit
+[@@js.call]
+(* ---------- Other functions ---------- *)
+(* ------------------------------------- *)
+
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
+(* Main function for initialization and to check permission *)
+
 val init :
   Init_options.t ->
   t
@@ -153,4 +250,6 @@ end
 
 val has_permission   : (Data_permission.t -> unit) -> unit
 [@@js.global "PushNotification.hasPermission"]
+
+(* Main function for initialization and to check permission *)
 (* -------------------------------------------------------------------------- *)
