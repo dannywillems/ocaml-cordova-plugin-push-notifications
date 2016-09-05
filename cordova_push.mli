@@ -29,6 +29,10 @@ module Init_options : sig
       ?sound:(bool [@js.default false])               ->
       ?clear_badge:(bool [@js.default false])         ->
       ?categories:(string array [@js.default [||]])   ->
+      (* For GCM *)
+      ?sender_ID:string                               ->
+      ?gcm_sandbox:(bool [@js.default false])         ->
+      ?topics:(string array [@js.default [||]])       ->
       unit                                            ->
       t
     [@@js.builder]
