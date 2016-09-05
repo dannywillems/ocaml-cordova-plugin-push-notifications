@@ -18,14 +18,12 @@ Don't forget to switch to a compiler **>= 4.03.0**.
 opam switch 4.03.0
 ```
 
-* If you added
-[ocaml-cordova-plugin-list](https://github.com/dannywillems/ocaml-cordova-plugin-list)
-as opam package provider, you can use
-```
+* This binding is available in opam
+```Shell
 opam install cordova-plugin-push
 ```
 
-* Else, you can use opam by pinning the repository with
+* You can also pin the repository with
 ```Shell
 opam pin add cordova-plugin-push https://github.com/dannywillems/ocaml-cordova-plugin-push.git
 ```
