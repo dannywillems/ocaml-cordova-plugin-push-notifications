@@ -62,3 +62,10 @@ you want to get some *unofficial* payload you created, you can use
 `Additional_data.get additional_data_value payload_as_string` which returns a
 Ojs.t object (see [gen_js_api](https://github.com/lexifi/gen_js_api)).
 
+
+## Push notification server in OCaml
+
+In [ocsigen-start](https://github.com/ocsigen/ocsigen-start), the module
+`Os_push_notifications` provides a simple interface to GCM (Google Cloud
+Messaging) to create a push notification server and send notification to
+devices.
