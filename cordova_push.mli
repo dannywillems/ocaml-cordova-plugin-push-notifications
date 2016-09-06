@@ -60,7 +60,13 @@ module Additional_data : sig
   val foreground      : t -> bool
   val cold_start      : t -> bool
   val inline_reply    : t -> string (* If payload "inline reply" is used *)
-  val not_id          : t -> int (* if payload "notId" is used *)
+  val not_id          : t -> string (* if payload "notId" is used *)
+  [@@@js.stop]
+  val get             : t -> string -> Ojs.t
+  [@@@js.start]
+  [@@@js.implem
+    let get t attr = Ojs.get t attr
+  ]
 end
 
 module Data_notification : sig
@@ -72,8 +78,7 @@ module Data_notification : sig
     val sound           : t -> string option (* FIXME: Sometimes null, why ? *)
     val image           : t -> string option (* FIXME: Sometimes null, why ? *)
     val launch_args     : t -> string option (* FIXME: Sometimes null, why ? *)
-    val additional_data : t -> Additional_data.t option
-    (* FIXME: sometimes null, why ? *)
+    val additional_data : t -> Additional_data.t
   end
 
 (* ---------- Objects for on notification ---------- *)
