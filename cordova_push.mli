@@ -59,6 +59,8 @@ module Additional_data : sig
 
   val foreground      : t -> bool
   val cold_start      : t -> bool
+  val inline_reply    : t -> string (* If payload "inline reply" is used *)
+  val not_id          : t -> int (* if payload "notId" is used *)
 end
 
 module Data_notification : sig
