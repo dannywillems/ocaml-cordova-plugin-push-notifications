@@ -20,17 +20,17 @@ opam switch 4.03.0
 
 * This binding is available in opam
 ```Shell
-opam install cordova-plugin-push
+opam install cordova-plugin-push-notifications
 ```
 
 * You can also pin the repository with
 ```Shell
-opam pin add cordova-plugin-push https://github.com/dannywillems/ocaml-cordova-plugin-push.git
+opam pin add cordova-plugin-push-notifications https://github.com/dannywillems/ocaml-cordova-plugin-push.git
 ```
 
 To compile your project, use
 ```Shell
-ocamlfind ocamlc -c -o [output_file] -package gen_js_api -package cordova-plugin-push [...] -linkpkg [other arguments]
+ocamlfind ocamlc -c -o [output_file] -package gen_js_api -package cordova-plugin-push-notifications [...] -linkpkg [other arguments]
 ```
 
 Don't forget to install phonegap-plugin-push with
