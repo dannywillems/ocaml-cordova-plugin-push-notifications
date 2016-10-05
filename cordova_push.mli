@@ -74,10 +74,10 @@ module Data_notification : sig
 
     val message         : t -> string
     val title           : t -> string
-    val count           : t -> string option (* FIXME: Sometimes null, why ? *)
-    val sound           : t -> string option (* FIXME: Sometimes null, why ? *)
-    val image           : t -> string option (* FIXME: Sometimes null, why ? *)
-    val launch_args     : t -> string option (* FIXME: Sometimes null, why ? *)
+    val count           : t -> string option (* FIXME: Sometimes null, why? *)
+    val sound           : t -> string option (* FIXME: Sometimes null, why? *)
+    val image           : t -> string option (* FIXME: Sometimes null, why? *)
+    val launch_args     : t -> string option (* FIXME: Sometimes null, why? *)
     val additional_data : t -> Additional_data.t
   end
 
@@ -90,7 +90,7 @@ module Data_notification : sig
 module Data_registration : sig
   type t
 
-  val registration_id : t -> int
+  val registration_id : t -> string
 end
 
 (* ---------- Object for on registration. ---------- *)
