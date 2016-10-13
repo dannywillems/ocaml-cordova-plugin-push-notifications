@@ -67,36 +67,51 @@ module Additional_data : sig
    *)
   [@@@js.stop]
   (** [get data key] returns the value of [data.key] as an [Ojs.t] type *)
-  val get             : t -> string -> Ojs.t
+  val get             : t -> string -> Ojs.t option
 
   (** [get_string data key] returns the value of [data.key] as a string *)
-  val get_string      : t -> string -> string
+  val get_string      : t -> string -> string option
 
   (** [get_int data key] returns the value of [data.key] as an integer *)
-  val get_int         : t -> string -> int
+  val get_int         : t -> string -> int option
 
   (** [get_float data key] returns the value of [data.key] as a float type *)
-  val get_float       : t -> string -> float
+  val get_float       : t -> string -> float option
 
   (** [get_int64 data key] returns the value of [data.key] as an int64 type *)
-  val get_int64       : t -> string -> int64
+  val get_int64       : t -> string -> int64 option
 
   (** [get_bool data key] returns the value of [data.key] as a boolean *)
-  val get_bool        : t -> string -> bool
+  val get_bool        : t -> string -> bool option
   [@@@js.start]
 
   [@@@js.implem
-    let get t attr            = Ojs.get t attr
+    let get t attr            = Ojs.option_of_js (fun t -> Ojs.get t attr) t
 
-    let get_string data attr  = Ojs.string_of_js (get data attr)
+    let get_string data attr  =
+      match (get data attr) with
+      | None -> None
+      | Some x -> Some (Ojs.string_of_js x)
 
-    let get_int data attr     = Ojs.int_of_js (get data attr)
+    let get_int data attr     =
+      match (get data attr) with
+      | None -> None
+      | Some x -> Some (Ojs.int_of_js x)
 
-    let get_float data attr   = Ojs.float_of_js (get data attr)
+    let get_float data attr   =
+      match (get data attr) with
+      | None -> None
+      | Some x -> Some (Ojs.float_of_js x)
 
-    let get_int64 data attr   = Int64.of_string (get_string data attr)
+    let get_int64 data attr   =
+      match (get_string data attr) with
+      | None -> None
+      | Some x -> Some (Int64.of_string x)
 
-    let get_bool data attr    = Ojs.bool_of_js (get data attr)
+    let get_bool data attr    =
+      match (get data attr) with
+      | None -> None
+      | Some x -> Some (Ojs.bool_of_js x)
   ]
 end
 
