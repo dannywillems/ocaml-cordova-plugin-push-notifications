@@ -1,5 +1,8 @@
 # ocaml-cordova-plugin-push
 
+[![LGPL-v3 licensed](https://img.shields.io/badge/license-LGPLv3-blue.svg)](https://raw.githubusercontent.com/dannywillems/ocaml-cordova-plugin-fcm/master/LICENSE)
+[![Build Status](https://travis-ci.org/dannywillems/ocaml-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/dannywillems/ocaml-cordova-plugin-push)
+
 Binding to
 [phonegap-plugin-push](https://github.com/phonegap/phonegap-plugin-push)
 
