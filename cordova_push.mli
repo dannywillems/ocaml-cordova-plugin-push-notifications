@@ -62,56 +62,90 @@ module Additional_data : sig
   val inline_reply    : t -> string (* If payload "inline reply" is used *)
   val not_id          : t -> string (* if payload "notId" is used *)
 
-  (** The following section defines functions to get data sent to server in
+  (** The following section defines functions to get data sent to FCM server in
       the payload 'data'.
    *)
   [@@@js.stop]
-  (** [get data key] returns the value of [data.key] as an [Ojs.t] type *)
-  val get             : t -> string -> Ojs.t option
+  (** [get data key] returns the value of [data.key] as an [Ojs.t] type. *)
+  val get                 : t -> string -> Ojs.t
+
+  (** [get_opt data key] returns the value of [data.key] as an [Ojs.t] option.
+      If [key] is not an attribute of [data], it returns [None].
+   *)
+  val get_opt             : t -> string -> Ojs.t option
 
   (** [get_string data key] returns the value of [data.key] as a string *)
-  val get_string      : t -> string -> string option
+  val get_string          : t -> string -> string
+
+  (** [get_string_opt data key] returns the value of [data.key] as a string
+      option. If [key] is not an attribute of [data], it returns [None].
+   *)
+  val get_string_opt      : t -> string -> string option
 
   (** [get_int data key] returns the value of [data.key] as an integer *)
-  val get_int         : t -> string -> int option
+  val get_int             : t -> string -> int
 
-  (** [get_float data key] returns the value of [data.key] as a float type *)
-  val get_float       : t -> string -> float option
-
-  (** [get_int64 data key] returns the value of [data.key] as an int64 type *)
-  val get_int64       : t -> string -> int64 option
+  (** [get_int_opt data key] returns the value of [data.key] as an int option.
+      If [key] is not an attribute of [data], it returns [None].
+   *)
+  val get_int_opt         : t -> string -> int option
 
   (** [get_bool data key] returns the value of [data.key] as a boolean *)
-  val get_bool        : t -> string -> bool option
+  val get_bool            : t -> string -> bool
+
+  (** [get_bool_opt data key] returns the value of [data.key] as a bool
+      option. If [key] is not an attribute of [data], it returns [None].
+   *)
+  val get_bool_opt        : t -> string -> bool option
+
+  (** [get_int64 data key] returns the value of [data.key] as an int64 type *)
+  val get_int64           : t -> string -> int64
+
+  (** [get_int64_opt data key] returns the value of [data.key] as an int64
+      option. If [key] is not an attribute of [data], it returns [None].
+   *)
+  val get_int64_opt       : t -> string -> int64 option
+
+  (** [get_float data key] returns the value of [data.key] as a float type *)
+  val get_float           : t -> string -> float
+
+  (** [get_float_opt data key] returns the value of [data.key] as a float
+      option. If [key] is not an attribute of [data], it returns [None].
+   *)
+  val get_float_opt       : t -> string -> float option
   [@@@js.start]
 
   [@@@js.implem
-    let get t attr            = Ojs.option_of_js (fun t -> Ojs.get t attr) t
+    let get data key        = Ojs.get data key
 
-    let get_string data attr  =
-      match (get data attr) with
-      | None -> None
-      | Some x -> Some (Ojs.string_of_js x)
+    let get_opt data key    = Ojs.option_of_js (fun x -> x) data
 
-    let get_int data attr     =
-      match (get data attr) with
-      | None -> None
-      | Some x -> Some (Ojs.int_of_js x)
+    let get_string data key = Ojs.string_of_js (get data key)
 
-    let get_float data attr   =
-      match (get data attr) with
-      | None -> None
-      | Some x -> Some (Ojs.float_of_js x)
+    let get_string_opt data key =
+      Ojs.option_of_js Ojs.string_of_js (get data key)
 
-    let get_int64 data attr   =
-      match (get_string data attr) with
-      | None -> None
-      | Some x -> Some (Int64.of_string x)
+    let get_int data key    = Ojs.int_of_js (get data key)
 
-    let get_bool data attr    =
-      match (get data attr) with
-      | None -> None
-      | Some x -> Some (Ojs.bool_of_js x)
+    let get_int_opt data key     =
+      Ojs.option_of_js Ojs.int_of_js (get data key)
+
+    let get_bool data key   = Ojs.bool_of_js (get data key)
+
+    let get_bool_opt data key    =
+      Ojs.option_of_js Ojs.bool_of_js (get data key)
+
+    let get_int64 data key  = Int64.of_string (get_string data key)
+
+    let get_int64_opt data key   =
+      Ojs.option_of_js
+        (fun v -> Int64.of_string (Ojs.string_of_js v))
+        (get data key)
+
+    let get_float data key  = Ojs.float_of_js (get data key)
+
+    let get_float_opt data key   =
+      Ojs.option_of_js Ojs.float_of_js (get data key)
   ]
 end
 
