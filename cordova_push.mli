@@ -57,7 +57,14 @@ end
 module Additional_data : sig
   type t
 
+  (** [foreground data] returns [true] if the notification was received while
+      the app was in the foreground. Else, it returns [false].
+   *)
   val foreground      : t -> bool
+
+  (** [cold_start data] returns [true] if the application is started by clicking
+      on the push notification, [false] if the app is already started.
+   *)
   val cold_start      : t -> bool
   val inline_reply    : t -> string (* If payload "inline reply" is used *)
   val not_id          : t -> string (* if payload "notId" is used *)
