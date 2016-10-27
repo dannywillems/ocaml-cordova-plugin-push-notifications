@@ -1,7 +1,7 @@
-# ocaml-cordova-plugin-push
+# ocaml-cordova-plugin-push-notifications
 
 [![LGPL-v3 licensed](https://img.shields.io/badge/license-LGPLv3-blue.svg)](https://raw.githubusercontent.com/dannywillems/ocaml-cordova-plugin-fcm/master/LICENSE)
-[![Build Status](https://travis-ci.org/dannywillems/ocaml-cordova-plugin-push.svg?branch=master)](https://travis-ci.org/dannywillems/ocaml-cordova-plugin-push)
+[![Build Status](https://travis-ci.org/dannywillems/ocaml-cordova-plugin-push-notifications.svg?branch=master)](https://travis-ci.org/dannywillems/ocaml-cordova-plugin-push-notifications)
 
 Binding to
 [phonegap-plugin-push](https://github.com/phonegap/phonegap-plugin-push)
@@ -28,7 +28,7 @@ opam install cordova-plugin-push-notifications
 
 * You can also pin the repository with
 ```Shell
-opam pin add cordova-plugin-push-notifications https://github.com/dannywillems/ocaml-cordova-plugin-push.git
+opam pin add cordova-plugin-push-notifications https://github.com/dannywillems/ocaml-cordova-plugin-push-notifications.git
 ```
 
 To compile your project, use
@@ -73,6 +73,6 @@ additional_data_value payload_as_string` which returns a `Ojs.t` object (see
 ## Push notification server in OCaml
 
 In [ocsigen-start](https://github.com/ocsigen/ocsigen-start), the module
-`Os_push_notifications` provides a simple interface to GCM (Google Cloud
+`Os_push_notifications` provides a simple interface to FCM (Google Cloud
 Messaging) to create a push notification server and send notification to
 devices.
