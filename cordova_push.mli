@@ -331,6 +331,7 @@ val clear_all_notifications :
 (* ---------- Other functions ---------- *)
 (* ------------------------------------- *)
 
+
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
@@ -349,6 +350,46 @@ end
 
 val has_permission   : (Data_permission.t -> unit) -> unit
 [@@js.global "PushNotification.hasPermission"]
+
+(******)
+module Channel_properties : sig
+  type t
+
+  val create :
+    ?id:string ->
+    ?description:string->
+    ?importance:int->
+    ?sound:(bool [@js.default true])->
+    ?vibration:(bool [@js.default true]) ->
+    ?visibility:(int [@js.default 1]) ->
+    unit ->
+    t
+  [@@js.builder]
+end
+
+val create_channel :
+  (unit -> unit)  ->
+  (unit -> unit)  ->
+  Channel_properties.t    ->
+  unit
+[@@js.global "PushNotification.createChannel"]
+
+val delete_channel :
+  t               ->
+  (unit -> unit)  ->
+  (unit -> unit)  ->
+  string          ->
+  unit
+[@@js.global "PushNotification.deleteChannel"]
+
+val list_channels :
+  t               ->
+  (unit -> unit)  ->
+  unit
+[@@js.global "PushNotification.listChannels"]
+
+(******)
+
 
 (* Main function for initialization and to check permission *)
 (* -------------------------------------------------------------------------- *)
