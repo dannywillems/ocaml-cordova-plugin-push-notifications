@@ -17,7 +17,7 @@ set -o nounset                              # Treat unset variables as an error
 URL=https://github.com/dannywillems/ocaml-cordova-plugin-push.git
 PLUGIN_PIN=cordova-plugin-push
 
-opam install ocamlfind ppx_tools js_of_ocaml gen_js_api
+opam install -y ocamlfind ppx_tools js_of_ocaml gen_js_api
 
 # Test for make and make clean
 make && make clean
@@ -26,4 +26,4 @@ make && make clean
 make install && make remove && make clean
 
 # Test for the pin and -package
-opam pin add ${PLUGIN_PIN} ${URL}
+opam pin add ${PLUGIN_PIN} ${URL} -y
