@@ -2,7 +2,9 @@ language: c
 
 sudo: required
 
-script: bash -ex .travis-ocaml.sh
+script:
+  - bash -ex .travis-ocaml.sh
+  - bash -ex .run-test.sh
 
 env:
   - OCAML_VERSION=4.03

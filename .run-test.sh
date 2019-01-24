@@ -17,22 +17,6 @@ set -o nounset                              # Treat unset variables as an error
 URL=https://github.com/dannywillems/ocaml-cordova-plugin-push.git
 PLUGIN_PIN=cordova-plugin-push
 
-export OPAMYES=1
-
-if [ -f "$HOME/.opam/config" ]; then
-    opam update
-    opam upgrade
-else
-    opam init
-fi
-
-if [ -n "${OPAM_SWITCH}" ]; then
-    opam switch ${OPAM_SWITCH}
-fi
-eval `opam config env`
-
-export OCAMLRUNPARAM=b
-
 opam install ocamlfind ppx_tools js_of_ocaml gen_js_api
 
 # Test for make and make clean
