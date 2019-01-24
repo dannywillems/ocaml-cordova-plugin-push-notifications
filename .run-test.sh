@@ -18,6 +18,7 @@ URL=https://github.com/dannywillems/ocaml-cordova-plugin-push.git
 PLUGIN_PIN=cordova-plugin-push
 
 opam install -y ocamlfind ppx_tools js_of_ocaml gen_js_api
+eval $(opam env)
 
 # Test for make and make clean
 make && make clean
