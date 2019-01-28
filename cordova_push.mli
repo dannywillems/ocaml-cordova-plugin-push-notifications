@@ -380,7 +380,7 @@ val delete_channel :
 [@@js.global "PushNotification.deleteChannel"]
 
 val list_channels :
-  success:(unit -> unit)  ->
+  success:(Channel_properties.t list -> unit)  ->
   unit
 [@@js.global "PushNotification.listChannels"]
 
