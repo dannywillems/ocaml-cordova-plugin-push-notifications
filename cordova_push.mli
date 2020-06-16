@@ -357,7 +357,7 @@ module Channel_properties : sig
     ?id:string ->
     ?description:string->
     ?importance:int->
-    ?sound:(bool [@js.default true])->
+    ?sound:(string [@js.default "default"])->
     ?vibration:(bool [@js.default true]) ->
     ?visibility:(int [@js.default 1]) ->
     unit ->
