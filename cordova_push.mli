@@ -328,6 +328,16 @@ val clear_all_notifications :
   (unit -> unit)  ->
   unit
 [@@js.call]
+
+(* iOS & Android only *)
+val clear_notification :
+  t               ->
+  (unit -> unit)  ->
+  (unit -> unit)  ->
+  int             ->
+  unit
+[@@js.call]
+
 (* ---------- Other functions ---------- *)
 (* ------------------------------------- *)
 
